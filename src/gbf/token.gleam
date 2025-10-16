@@ -1,6 +1,6 @@
 pub type Token {
   /// Everything that is not one of the tokens below, considered the be a comment
-  Comment
+  Comment(String)
 
   /// Increment the data pointer by one (to point to the next cell to the right).
   /// `>` symbol
