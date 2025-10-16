@@ -27,14 +27,15 @@ fn eval_command(
   vm: VirtualMachine,
 ) -> Result(VirtualMachine, Error) {
   case command {
-    #(token.StartBlock, pos) -> Error(UnexpectedCommand(pos))
-    #(token.EndBlock, pos) -> Error(UnexpectedCommand(pos))
     #(token.IncrementPointer, _) -> increment_pointer(vm)
     #(token.DecrementPointer, _) -> decrement_pointer(vm)
     #(token.IncrementByte, _) -> increment_byte(vm)
     #(token.DecrementByte, _) -> decrement_byte(vm)
     #(token.OutputByte, _) -> output_byte(vm)
     #(token.InputByte, _) -> input_byte(vm)
+
+    #(token.StartBlock, pos) -> Error(UnexpectedCommand(pos))
+    #(token.EndBlock, pos) -> Error(UnexpectedCommand(pos))
     #(_, pos) -> Error(UnexpectedCommand(pos))
   }
 }
