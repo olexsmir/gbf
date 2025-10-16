@@ -1,24 +1,26 @@
 # gbf
 
-[![Package Version](https://img.shields.io/hexpm/v/gbf)](https://hex.pm/packages/gbf)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/gbf/)
+I was bored and made this :star: gleaming brainfuck interpreter.
 
-```sh
-gleam add gbf@1
-```
+## How to use?
+### As library
 ```gleam
 import gbf
+import gleam/io
 
 pub fn main() -> Nil {
-  // TODO: An example of the project in use
+  let input =
+    "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
+
+  let assert Ok(vm) = gbf.run(input)
+
+  vm
+  |> gbf.output
+  |> io.println
+// > "Hello World!"
 }
 ```
 
-Further documentation can be found at <https://hexdocs.pm/gbf>.
+### As CLI tool
 
-## Development
-
-```sh
-gleam run   # Run the project
-gleam test  # Run the tests
-```
+TODO: yet to be implemented
