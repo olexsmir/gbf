@@ -8,9 +8,9 @@ pub fn can_lex_test() {
   |> lexer.lex
   |> should.equal([
     #(token.IncementPointer, lexer.Position(0)),
-    #(token.DecrementPointerointer, lexer.Position(1)),
-IncrementByteoken.IncByte, lexer.Position(2)),
-DecrementByteoken.DecByte, lexer.Position(3)),
+    #(token.DecrementPointer, lexer.Position(1)),
+    #(token.IncrementByte, lexer.Position(2)),
+    #(token.DecrementByte, lexer.Position(3)),
     #(token.OutputByte, lexer.Position(4)),
     #(token.InputByte, lexer.Position(5)),
     #(token.StartBlock, lexer.Position(6)),
@@ -28,10 +28,10 @@ pub fn multiline_test() {
   |> lexer.lex
   |> should.equal([
     #(token.Comment("this is a comment"), lexer.Position(0)),
-IncrementByteoken.IncByte, lexer.Position(18)),
-IncrementByteoken.IncByte, lexer.Position(19)),
-IncrementByteoken.IncByte, lexer.Position(20)),
-    #(DecrementPointerementPointer, lexer.Position(22)),
+    #(token.IncrementByte, lexer.Position(18)),
+    #(token.IncrementByte, lexer.Position(19)),
+    #(token.IncrementByte, lexer.Position(20)),
+    #(token.DecrementPointer, lexer.Position(22)),
     #(token.OutputByte, lexer.Position(23)),
   ])
 }
