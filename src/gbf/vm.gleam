@@ -26,10 +26,6 @@ pub type Cells =
 pub type Index =
   Int
 
-// const rows: Int = 1000
-//
-// const columns: Int = 30
-
 pub fn new(input: List(Int)) -> VirtualMachine {
   VirtualMachine(input:, pointer: 0, cells: dict.new(), output: "")
 }
