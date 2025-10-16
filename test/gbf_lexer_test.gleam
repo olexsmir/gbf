@@ -7,7 +7,7 @@ pub fn can_lex_test() {
   |> lexer.new
   |> lexer.lex
   |> should.equal([
-    #(token.IncementPointer, lexer.Position(0)),
+    #(token.IncrementPointer, lexer.Position(0)),
     #(token.DecrementPointer, lexer.Position(1)),
     #(token.IncrementByte, lexer.Position(2)),
     #(token.DecrementByte, lexer.Position(3)),

@@ -4,7 +4,7 @@ pub type Token {
 
   /// Increment the data pointer by one (to point to the next cell to the right).
   /// `>` symbol
-  IncementPointer
+  IncrementPointer
 
   /// Decrement the data pointer by one (to point to the next cell to the left).
   /// `<` symbol
