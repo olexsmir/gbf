@@ -5,7 +5,6 @@ pub const tape_size = 30_000
 
 pub const cell_size = 255
 
-/// Machine Model
 /// The machine model we are going to use for this interpreter is very simple:
 ///   - Our memory consists of 30,000 cells (1000 rows * 30 columns).
 ///   - There's a data pointer which points to a specific cell and is initialized at
