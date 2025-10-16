@@ -32,10 +32,10 @@ fn next(lexer: Lexer) {
     " " <> source | "\n" <> source | "\r" <> source | "\t" <> source ->
       advance(lexer, source, 1) |> next
 
-    ">" <> source -> token(lexer, token.IncPointer, source, 1)
-    "<" <> source -> token(lexer, token.DecPointer, source, 1)
-    "+" <> source -> token(lexer, token.IncByte, source, 1)
-    "-" <> source -> token(lexer, token.DecByte, source, 1)
+    ">" <> source -> token(lexer, token.IncementPointer, source, 1)
+    "<" <> source -> token(lexer, token.DecrementPointer, source, 1)
+    "+" <> source -> token(lexer, token.IncrementByte, source, 1)
+    "-" <> source -> token(lexer, token.DecrementByte, source, 1)
     "." <> source -> token(lexer, token.OutputByte, source, 1)
     "," <> source -> token(lexer, token.InputByte, source, 1)
     "[" <> source -> token(lexer, token.StartBlock, source, 1)

@@ -4,19 +4,19 @@ pub type Token {
 
   /// Increment the data pointer by one (to point to the next cell to the right).
   /// `>` symbol
-  IncPointer
+  IncementPointer
 
   /// Decrement the data pointer by one (to point to the next cell to the left).
   /// `<` symbol
-  DecPointer
+  DecrementPointer
 
   /// Increment the byte at the data pointer by one.
   /// `+` symbol
-  IncByte
+  IncrementByte
 
   /// Decrement the byte at the data pointer by one.
   /// `-` symbol
-  DecByte
+  DecrementByte
 
   /// Output the byte at the data pointer.
   /// `.` symbol
