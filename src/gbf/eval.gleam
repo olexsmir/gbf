@@ -18,7 +18,7 @@ pub type Error {
 pub fn eval(vm: VirtualMachine, node: AST) -> Result(VirtualMachine, Error) {
   case node {
     parser.Leaf(command) -> eval_command(command, vm)
-    parser.Node(block) -> eval_block(block, vm)
+    parser.Node(block) -> eval_block(vm, block)
   }
 }
 
@@ -40,16 +40,16 @@ fn eval_command(
   }
 }
 
-fn eval_block(block: Block, vm: VirtualMachine) -> Result(VirtualMachine, Error) {
+fn eval_block(vm: VirtualMachine, block: Block) -> Result(VirtualMachine, Error) {
   use acc_vm, child <- list.fold(block.children, Ok(vm))
   case child {
     parser.Leaf(command) -> result.try(acc_vm, eval_command(command, _))
     parser.Node(child_block) ->
-      result.try(acc_vm, eval_child_block(child_block, _))
+      result.try(acc_vm, eval_child_block(_, child_block))
   }
 }
 
-fn eval_child_block(child_block: Block, vm: VirtualMachine) {
+fn eval_child_block(vm: VirtualMachine, child_block: Block) {
   let cell_value =
     vm.get_cell(vm, vm.pointer)
     |> option.unwrap(0)
@@ -57,8 +57,8 @@ fn eval_child_block(child_block: Block, vm: VirtualMachine) {
   case cell_value > 0 {
     False -> Ok(vm)
     True -> {
-      let new_acc = eval_block(child_block, vm)
-      result.try(new_acc, eval_child_block(child_block, _))
+      let new_acc = eval_block(vm, child_block)
+      result.try(new_acc, eval_child_block(_, child_block))
     }
   }
 }
