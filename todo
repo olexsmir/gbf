@@ -1,0 +1,5 @@
+- vm should be always first param
+- add custom error type for each module
+- parser should be just tokens, and not (token, tokens)
+- return error in parser/lexer and it's location
+- i dont like that i have to pass Ok(vm) at start
