@@ -40,6 +40,7 @@ fn next(lexer: Lexer) {
     "," <> source -> token(lexer, token.InputByte, source, 1)
     "[" <> source -> token(lexer, token.StartBlock, source, 1)
     "]" <> source -> token(lexer, token.EndBlock, source, 1)
+
     _ ->
       case string.pop_grapheme(lexer.source) {
         Error(_) -> #(lexer, #(token.EOF, Position(lexer.offset)))
