@@ -1,18 +1,13 @@
-import char
 import gbf/lexer
 import gbf/parser.{type AST, type Block, type Command}
 import gbf/token
 import gbf/vm.{type VirtualMachine}
+import gleam/int
 import gleam/list
-import gleam/option
 import gleam/result
 
 pub type Error {
-  PointerRanOffTape
-  IntegerOverflow
-  IntegerUnderflow
-  EmptyInput
-  InvalidChar(Int)
+  VmError(reason: vm.Error)
   UnexpectedCommand(pos: lexer.Position)
 }
 
@@ -28,12 +23,16 @@ fn eval_command(
   vm: VirtualMachine,
 ) -> Result(VirtualMachine, Error) {
   case command {
-    #(token.IncrementPointer, _) -> increment_pointer(vm)
-    #(token.DecrementPointer, _) -> decrement_pointer(vm)
-    #(token.IncrementByte, _) -> increment_byte(vm)
-    #(token.DecrementByte, _) -> decrement_byte(vm)
-    #(token.OutputByte, _) -> output_byte(vm)
-    #(token.InputByte, _) -> input_byte(vm)
+    #(token.IncrementPointer, _) ->
+      vm.set_pointer(vm, vm.pointer + 1) |> wrap_vm_error()
+    #(token.DecrementPointer, _) ->
+      vm.set_pointer(vm, vm.pointer - 1) |> wrap_vm_error()
+
+    #(token.IncrementByte, _) -> mut_byte(vm, int.add)
+    #(token.DecrementByte, _) -> mut_byte(vm, int.subtract)
+
+    #(token.InputByte, _) -> vm.input_byte(vm) |> wrap_vm_error
+    #(token.OutputByte, _) -> vm.output_byte(vm) |> wrap_vm_error
 
     #(token.StartBlock, pos) -> Error(UnexpectedCommand(pos))
     #(token.EndBlock, pos) -> Error(UnexpectedCommand(pos))
@@ -51,9 +50,10 @@ fn eval_block(vm: VirtualMachine, block: Block) -> Result(VirtualMachine, Error)
 }
 
 fn eval_child_block(vm: VirtualMachine, child_block: Block) {
-  let cell_value =
+  use cell_value <- result.try(
     vm.get_cell(vm, vm.pointer)
-    |> option.unwrap(0)
+    |> result.map_error(VmError),
+  )
 
   case cell_value > 0 {
     False -> Ok(vm)
@@ -64,66 +64,19 @@ fn eval_child_block(vm: VirtualMachine, child_block: Block) {
   }
 }
 
-fn increment_pointer(vm: VirtualMachine) {
-  let pointer = vm.pointer + 1
-  case pointer > vm.tape_size {
-    True -> PointerRanOffTape |> Error
-    False -> Ok(vm.VirtualMachine(..vm, pointer: pointer))
-  }
-}
-
-fn decrement_pointer(vm: VirtualMachine) {
-  let pointer = vm.pointer - 1
-  case pointer < 0 {
-    True -> PointerRanOffTape |> Error
-    False -> Ok(vm.VirtualMachine(..vm, pointer: pointer))
-  }
-}
-
-fn increment_byte(vm: VirtualMachine) {
-  let cell_value =
+fn mut_byte(vm: VirtualMachine, op: fn(Int, Int) -> Int) {
+  use cell_value <- result.try(
     vm.get_cell(vm, vm.pointer)
-    |> option.unwrap(0)
+    |> result.map_error(VmError),
+  )
 
-  let new_cell_value = cell_value + 1
-  case new_cell_value > vm.cell_size {
-    True -> IntegerOverflow |> Error
-    False -> vm.set_cell(vm, vm.pointer, new_cell_value) |> Ok
-  }
+  let cell_value = op(cell_value, 1)
+  vm.set_cell(vm, vm.pointer, cell_value)
+  |> result.map_error(VmError)
 }
 
-fn decrement_byte(vm: VirtualMachine) {
-  let cell_value =
-    vm.get_cell(vm, vm.pointer)
-    |> option.unwrap(0)
-
-  let new_cell_value = cell_value - 1
-  case new_cell_value < 0 {
-    True -> IntegerUnderflow |> Error
-    False -> vm.set_cell(vm, vm.pointer, new_cell_value) |> Ok
-  }
-}
-
-fn input_byte(vm: VirtualMachine) {
-  case vm.input {
-    [] -> EmptyInput |> Error
-    [first, ..] -> {
-      let new_input = list.drop(vm.input, 1)
-      let vm = vm.set_cell(vm, vm.pointer, first)
-      Ok(vm.VirtualMachine(..vm, input: new_input))
-    }
-  }
-}
-
-fn output_byte(vm: VirtualMachine) {
-  let cell_value =
-    vm.get_cell(vm, vm.pointer)
-    |> option.unwrap(0)
-
-  case char.from_code(cell_value) {
-    "" -> Error(InvalidChar(cell_value))
-    c ->
-      vm.VirtualMachine(..vm, output: vm.output <> c)
-      |> Ok
-  }
+fn wrap_vm_error(
+  r: Result(VirtualMachine, vm.Error),
+) -> Result(VirtualMachine, Error) {
+  result.map_error(r, VmError)
 }
