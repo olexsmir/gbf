@@ -19,7 +19,7 @@ pub fn can_lex_test() {
 }
 
 pub fn can_lex_with_comments_test() {
-  "><+-.,[] this is comment"
+  "><+-.,[] this is a comment"
   |> lexer.new
   |> lexer.lex
   |> should.equal([
@@ -31,6 +31,6 @@ pub fn can_lex_with_comments_test() {
     #(token.InputByte, lexer.Position(5)),
     #(token.StartBlock, lexer.Position(6)),
     #(token.EndBlock, lexer.Position(7)),
-    #(token.Comment, lexer.Position(9)),
+    #(token.Comment("this is a comment"), lexer.Position(9)),
   ])
 }
