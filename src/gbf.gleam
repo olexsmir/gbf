@@ -18,8 +18,6 @@ pub fn main() {
     |> list.map(char.to_code)
     |> vm.new
 
-  echo vm
-
   let ast = input |> lexer.new() |> lexer.lex |> parser.parse()
   case ast {
     Error(_) -> panic as "not yay failed"
