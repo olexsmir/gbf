@@ -5,14 +5,15 @@ import gleam/pair
 import gleam/result
 
 pub type AST {
-  Leaf(#(Token, Position))
-  Node(children: List(AST), position: Position)
+  Leaf(Command)
+  Node(Block)
 }
 
-pub type Error {
-  FinishedTooEarly
-  UnexpectedCommand
-  UnexpectedBlock
+pub type Command =
+  #(Token, Position)
+
+pub type Block {
+  Block(children: List(AST), position: Position)
 }
 
 pub fn parse(tokens: List(#(Token, Position))) -> Result(AST, Error) {
@@ -53,8 +54,9 @@ fn parse_block(token, tokens, node) {
         child_block,
       ))
 
-      let new_children = list.append(children, [parsed_child_block])
-      let new_node = Node(children: new_children, position:)
+      let new_children = list.append(block.children, [parsed_child_block])
+      let new_node =
+        Node(Block(children: new_children, position: block.position))
 
       parse_tokens(remaining_tokens, new_node)
     }
@@ -70,7 +72,11 @@ fn parse_command(
     Leaf(_) -> Error(UnexpectedBlock)
     Node(children, position) -> {
       let command = Leaf(token)
-      let node = Node(children: list.append(children, [command]), position:)
+      let node =
+        Node(Block(
+          children: list.append(block.children, [command]),
+          position: block.position,
+        ))
 
       parse_tokens(tokens, node)
     }
