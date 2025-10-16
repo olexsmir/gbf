@@ -1,4 +1,4 @@
-import gbf/lexer
+import gbf/lexer.{Position}
 import gbf/token
 import gleeunit/should
 
@@ -7,14 +7,14 @@ pub fn can_lex_test() {
   |> lexer.new
   |> lexer.lex
   |> should.equal([
-    #(token.IncPointer, lexer.Position(0)),
-    #(token.DecPointer, lexer.Position(1)),
-    #(token.IncByte, lexer.Position(2)),
-    #(token.DecByte, lexer.Position(3)),
-    #(token.OutputByte, lexer.Position(4)),
-    #(token.InputByte, lexer.Position(5)),
-    #(token.StartBlock, lexer.Position(6)),
-    #(token.EndBlock, lexer.Position(7)),
+    #(token.IncPointer, Position(0)),
+    #(token.DecPointer, Position(1)),
+    #(token.IncByte, Position(2)),
+    #(token.DecByte, Position(3)),
+    #(token.OutputByte, Position(4)),
+    #(token.InputByte, Position(5)),
+    #(token.StartBlock, Position(6)),
+    #(token.EndBlock, Position(7)),
   ])
 }
 
@@ -23,14 +23,24 @@ pub fn can_lex_with_comments_test() {
   |> lexer.new
   |> lexer.lex
   |> should.equal([
-    #(token.IncPointer, lexer.Position(0)),
-    #(token.DecPointer, lexer.Position(1)),
-    #(token.IncByte, lexer.Position(2)),
-    #(token.DecByte, lexer.Position(3)),
-    #(token.OutputByte, lexer.Position(4)),
-    #(token.InputByte, lexer.Position(5)),
-    #(token.StartBlock, lexer.Position(6)),
-    #(token.EndBlock, lexer.Position(7)),
-    #(token.Comment("this is a comment"), lexer.Position(9)),
+    #(token.IncPointer, Position(0)),
+    #(token.DecPointer, Position(1)),
+    #(token.IncByte, Position(2)),
+    #(token.DecByte, Position(3)),
+    #(token.OutputByte, Position(4)),
+    #(token.InputByte, Position(5)),
+    #(token.StartBlock, Position(6)),
+    #(token.EndBlock, Position(7)),
+    #(token.Comment("this is a comment"), Position(9)),
+  ])
+}
+
+pub fn can_lex_multiline_test() {
+  "this is a comment
+  "
+  |> lexer.new
+  |> lexer.lex
+  |> should.equal([
+    #(token.Comment("this is a comment"), Position(0)),
   ])
 }
