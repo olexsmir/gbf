@@ -5,8 +5,15 @@ import gleam/pair
 import gleam/result
 
 pub type AST {
-  Leaf(#(Token, Position))
-  Node(children: List(AST), position: Position)
+  Leaf(Command)
+  Node(Block)
+}
+
+pub type Command =
+  #(Token, Position)
+
+pub type Block {
+  Block(children: List(AST), position: Position)
 }
 
 pub type Error {
@@ -14,9 +21,8 @@ pub type Error {
   UnexpectedCommand
   UnexpectedBlock
 }
-
 pub fn parse(tokens: List(#(Token, Position))) -> Result(AST, Error) {
-  let root = Node(children: [], position: Position(0))
+  let root = Node(Block(children: [], position: Position(0)))
 
   use #(ast, remaining_tokens) <- result.try(parse_tokens(tokens, root))
 
@@ -46,15 +52,16 @@ fn parse_block_end(tokens: List(#(Token, Position)), node: AST) {
 fn parse_block(token, tokens, node) {
   case node {
     Leaf(_) -> Error(UnexpectedCommand)
-    Node(children, position) -> {
-      let child_block = Node(children: [], position: pair.second(token))
+    Node(block) -> {
+      let child_block = Node(Block(children: [], position: pair.second(token)))
       use #(parsed_child_block, remaining_tokens) <- result.try(parse_tokens(
         tokens,
         child_block,
       ))
 
-      let new_children = list.append(children, [parsed_child_block])
-      let new_node = Node(children: new_children, position:)
+      let new_children = list.append(block.children, [parsed_child_block])
+      let new_node =
+        Node(Block(children: new_children, position: block.position))
 
       parse_tokens(remaining_tokens, new_node)
     }
@@ -68,9 +75,14 @@ fn parse_command(
 ) {
   case node {
     Leaf(_) -> Error(UnexpectedBlock)
-    Node(children, position) -> {
+    Leaf(_) -> Error("enclosing block was command")
+    Node(block) -> {
       let command = Leaf(token)
-      let node = Node(children: list.append(children, [command]), position:)
+      let node =
+        Node(Block(
+          children: list.append(block.children, [command]),
+          position: block.position,
+        ))
 
       parse_tokens(tokens, node)
     }
