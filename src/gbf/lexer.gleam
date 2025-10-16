@@ -32,14 +32,14 @@ fn next(lexer: Lexer) {
     " " <> source | "\n" <> source | "\r" <> source | "\t" <> source ->
       advance(lexer, source, 1) |> next
 
-    ">" <> source -> token(lexer, token.IncementPointer, source, 1)
-    "<" <> source -> token(lexer, token.DecrementPointer, source, 1)
-    "+" <> source -> token(lexer, token.IncrementByte, source, 1)
-    "-" <> source -> token(lexer, token.DecrementByte, source, 1)
-    "." <> source -> token(lexer, token.OutputByte, source, 1)
-    "," <> source -> token(lexer, token.InputByte, source, 1)
-    "[" <> source -> token(lexer, token.StartBlock, source, 1)
-    "]" <> source -> token(lexer, token.EndBlock, source, 1)
+    ">" <> source -> token(lexer, token.IncementPointer, source)
+    "<" <> source -> token(lexer, token.DecrementPointer, source)
+    "+" <> source -> token(lexer, token.IncrementByte, source)
+    "-" <> source -> token(lexer, token.DecrementByte, source)
+    "." <> source -> token(lexer, token.OutputByte, source)
+    "," <> source -> token(lexer, token.InputByte, source)
+    "[" <> source -> token(lexer, token.StartBlock, source)
+    "]" <> source -> token(lexer, token.EndBlock, source)
 
     _ ->
       case string.pop_grapheme(lexer.source) {
@@ -49,8 +49,8 @@ fn next(lexer: Lexer) {
   }
 }
 
-fn advance(lexer, source, offset) {
-  Lexer(..lexer, source:, offset: lexer.offset + offset)
+fn advance(lexer, source) {
+  Lexer(..lexer, source:, offset: lexer.offset + 1)
 }
 
 fn advanced(
