@@ -1,4 +1,5 @@
 import gleam/dict.{type Dict}
+import gleam/erlang/charlist.{type Charlist}
 import gleam/option.{type Option, None, Some}
 
 pub const tape_size = 30_000
