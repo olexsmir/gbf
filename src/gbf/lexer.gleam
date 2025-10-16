@@ -20,11 +20,6 @@ pub fn lex(lexer: Lexer) -> List(#(Token, Position)) {
   |> list.reverse
 }
 
-// pub fn to_string(tokens: List(#(Token, Position))) {
-//   use source, #(tok, _) <- list.fold(tokens, "")
-//   source <> token.to_source(tok)
-// }
-
 fn do_lex(lexer: Lexer, tokens: List(#(Token, Position))) {
   case next(lexer) {
     #(_, #(token.EOF, _)) -> tokens
