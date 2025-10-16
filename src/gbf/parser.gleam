@@ -21,6 +21,7 @@ pub type Error {
   UnexpectedCommand
   UnexpectedBlock
 }
+
 pub fn parse(tokens: List(#(Token, Position))) -> Result(AST, Error) {
   let root = Node(Block(children: [], position: Position(0)))
 
