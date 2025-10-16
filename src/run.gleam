@@ -2,10 +2,9 @@ import gbf
 import gleam/io
 
 pub fn main() -> Nil {
-  let input =
+  let assert Ok(vm) =
     "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
-
-  let assert Ok(vm) = gbf.run(input)
+    |> gbf.run
 
   vm
   |> gbf.output
