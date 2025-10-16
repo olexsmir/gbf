@@ -65,7 +65,7 @@ fn eval_child_block(vm: VirtualMachine, child_block: Block) {
 
 fn increment_pointer(vm: VirtualMachine) {
   let pointer = vm.pointer + 1
-  case pointer >= vm.tape_size {
+  case pointer > vm.tape_size {
     True -> PointerRanOffTape |> Error
     False -> Ok(vm.VirtualMachine(..vm, pointer: pointer))
   }
