@@ -42,14 +42,15 @@ fn next(lexer: Lexer) {
     "," <> source -> token(lexer, token.InputByte, source, 1)
     "[" <> source -> token(lexer, token.StartBlock, source, 1)
     "]" <> source -> token(lexer, token.EndBlock, source, 1)
-
     _ ->
       case string.pop_grapheme(lexer.source) {
         Error(_) -> #(lexer, #(token.EOF, Position(lexer.offset)))
-        Ok(_) -> panic as "not yet implemented"
-        // advance(lexer, source, 1)
-        // |> comment(lexer, lexer.offset)
+        Ok(_) -> comment(lexer, lexer.offset)
       }
+    //   Ok(#(grapheme, source)) ->
+    //     advance(lexer, source, 1)
+    //     |> comment(lexer, lexer.offset)
+    // }
   }
 }
 
@@ -81,5 +82,5 @@ fn comment(lexer: Lexer, start: Int) -> #(Lexer, #(Token, Position)) {
   let eaten = string.byte_size(prefix)
   let lexer = advance(lexer, suffix, eaten)
 
-  #(lexer, #(token.Comment, Position(start)))
+  #(lexer, #(token.Comment(prefix), Position(start)))
 }
