@@ -9,7 +9,8 @@ import gleam/string
 
 pub fn main() {
   let input =
-    "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
+    // "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
+    "+[>++]>"
 
   use parsed_program <- result.try(
     input
@@ -18,19 +19,21 @@ pub fn main() {
     |> parser.parse,
   )
 
-  let vm =
-    input
-    |> string.split(on: "")
-    |> list.map(char_to_code)
-    |> vm.new
-    |> Ok
-
-  use res <- result.try(eval.eval(parsed_program, vm))
-
-  io.println("input: " <> input)
-  io.println("output: " <> res.output)
-
+  echo parsed_program
   Ok("")
+  // let vm =
+  //   input
+  //   |> string.split(on: "")
+  //   |> list.map(char_to_code)
+  //   |> vm.new
+  //   |> Ok
+  //
+  // use res <- result.try(eval.eval(parsed_program, vm))
+  //
+  // io.println("input: " <> input)
+  // io.println("output: " <> res.output)
+  //
+  // Ok("")
 }
 
 fn char_to_code(s: String) -> Int {
