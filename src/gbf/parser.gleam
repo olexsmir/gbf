@@ -5,7 +5,12 @@ import gleam/pair
 import gleam/result
 
 pub type AST {
+  /// A single command
+  ///
   Leaf(Command)
+
+  /// A block with nested children (used for loops)
+  ///
   Node(Block)
 }
 
@@ -22,6 +27,12 @@ pub type Error {
   UnexpectedBlock
 }
 
+/// Parses a list of tokens into an Abstract Syntax Tree.
+///
+/// Takes a flat list of tokens with their positions and constructs
+/// a hierarchical tree structure where loop blocks become nested nodes.
+/// All tokens must be consumed for successful parsing.
+///
 pub fn parse(tokens: List(#(Token, Position))) -> Result(AST, Error) {
   let root = Node(Block(children: [], position: Position(0)))
 

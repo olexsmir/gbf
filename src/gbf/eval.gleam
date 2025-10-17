@@ -7,10 +7,15 @@ import gleam/list
 import gleam/result
 
 pub type Error {
-  VmError(reason: vm.Error)
+  /// An unexpected command was encountered at the given position.
   UnexpectedCommand(pos: lexer.Position)
+
+  /// An error occurred in the virtual machine
+  VmError(reason: vm.Error)
 }
 
+/// Evaluates an AST node against the virtual machine.
+///
 pub fn eval(vm: VirtualMachine, node: AST) -> Result(VirtualMachine, Error) {
   case node {
     parser.Leaf(command) -> eval_command(command, vm)
