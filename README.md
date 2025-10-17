@@ -22,5 +22,7 @@ pub fn main() -> Nil {
 ```
 
 ### As CLI tool
-
-TODO: yet to be implemented
+```bash
+gleam run -m run ./examples/helloworld.bf
+#> Hello World!
+```
