@@ -1,7 +1,6 @@
 import char
 import gleam/dict.{type Dict}
 import gleam/list
-import gleam/option.{type Option, None, Some}
 import gleam/result
 
 pub const tape_size = 30_000
@@ -40,10 +39,12 @@ pub fn new(input: List(Int)) -> VirtualMachine {
   VirtualMachine(input:, pointer: 0, cells: dict.new(), output: "")
 }
 
-pub fn get_cell(vm: VirtualMachine, pointer: Index) -> Option(Int) {
+pub fn get_cell(vm: VirtualMachine, pointer: Index) -> Result(Index, Error) {
+  use pointer <- result.try(validate_tape_size(pointer))
+
   case dict.get(vm.cells, pointer) {
-    Ok(value) -> Some(value)
-    Error(_) -> None
+    Ok(value) -> Ok(value)
+    Error(_) -> Ok(0)
   }
 }
 
@@ -83,9 +84,7 @@ pub fn input_byte(vm: VirtualMachine) -> Result(VirtualMachine, Error) {
 }
 
 pub fn output_byte(vm: VirtualMachine) -> Result(VirtualMachine, Error) {
-  let cell_value =
-    get_cell(vm, vm.pointer)
-    |> option.unwrap(0)
+  use cell_value <- result.try(get_cell(vm, vm.pointer))
 
   case char.from_code(cell_value) {
     "" -> Error(InvalidChar(cell_value))
