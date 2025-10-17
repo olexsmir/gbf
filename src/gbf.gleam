@@ -8,25 +8,21 @@ import gleam/result
 import gleam/string
 
 pub type Error {
-  Parser(parser.Error)
-  Eval(eval.Error)
+  Parser(reason: parser.Error)
+  Eval(reason: eval.Error)
 }
 
 pub fn run(source: String) -> Result(VirtualMachine, Error) {
-  let vm =
+  let bvm =
     source
     |> string.split(on: "")
     |> list.map(char.to_code)
     |> vm.new
 
   use ast <- result.try(parse_ast(source))
-  use vm <- result.try(eval_ast(vm, ast))
+  use bvm <- result.try(eval_ast(bvm, ast))
 
-  Ok(vm)
-}
-
-pub fn output(vm: VirtualMachine) -> String {
-  vm.output
+  Ok(bvm)
 }
 
 fn parse_ast(source: String) {
