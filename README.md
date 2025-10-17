@@ -5,6 +5,9 @@ I was bored and made this :star: gleaming brainfuck interpreter.
 ## How to use?
 ### As library
 ```gleam
+import gbf
+import gleam/io
+
 pub fn main() -> Nil {
   let input =
     "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
@@ -12,7 +15,7 @@ pub fn main() -> Nil {
   let assert Ok(virtual_machine) = gbf.run(input)
 
   virtual_machine
-  |> vm.output
+  |> gbf.output
   |> io.println
 //>  Hello World!
 }
