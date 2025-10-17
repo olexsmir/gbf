@@ -39,6 +39,10 @@ pub fn new(input: List(Int)) -> VirtualMachine {
   VirtualMachine(input:, pointer: 0, cells: dict.new(), output: "")
 }
 
+pub fn output(vm: VirtualMachine) -> String {
+  vm.output
+}
+
 pub fn get_cell(vm: VirtualMachine, pointer: Index) -> Result(Index, Error) {
   use pointer <- result.try(validate_tape_size(pointer))
 
