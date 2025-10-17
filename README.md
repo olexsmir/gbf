@@ -5,19 +5,15 @@ I was bored and made this :star: gleaming brainfuck interpreter.
 ## How to use?
 ### As library
 ```gleam
-import gbf
-import gleam/io
-
 pub fn main() -> Nil {
   let input =
     "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++."
 
-  let assert Ok(vm) = gbf.run(input)
+  let assert Ok(virtual_machine) = gbf.run(input)
 
-  vm
-  |> gbf.output
+  virtual_machine
+  |> vm.output
   |> io.println
-// > "Hello World!"
 }
 ```
 
