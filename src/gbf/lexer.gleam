@@ -22,7 +22,7 @@ pub fn lex(lexer: Lexer) -> List(#(Token, Position)) {
 
 fn do_lex(lexer: Lexer, tokens: List(#(Token, Position))) {
   case next(lexer) {
-    #(_, #(token.EOF, _)) -> tokens
+    #(_, #(token.EndOfFile, _)) -> tokens
     #(lexer, token) -> do_lex(lexer, [token, ..tokens])
   }
 }
@@ -43,7 +43,7 @@ fn next(lexer: Lexer) {
 
     _ ->
       case string.pop_grapheme(lexer.source) {
-        Error(_) -> #(lexer, #(token.EOF, Position(lexer.offset)))
+        Error(_) -> #(lexer, #(token.EndOfFile, Position(lexer.offset)))
         Ok(_) -> comment(lexer, lexer.offset)
       }
   }
