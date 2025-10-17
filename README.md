@@ -14,6 +14,7 @@ pub fn main() -> Nil {
   virtual_machine
   |> vm.output
   |> io.println
+//>  Hello World!
 }
 ```
 
