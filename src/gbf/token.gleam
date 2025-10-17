@@ -35,5 +35,5 @@ pub type Token {
   EndBlock
 
   /// End of file
-  EOF
+  EndOfFile
 }
