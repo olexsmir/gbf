@@ -8,6 +8,7 @@ pub opaque type Lexer {
 }
 
 pub type Position {
+  /// A token position in a wile, represented as offset of bytes
   Position(offset: Int)
 }
 

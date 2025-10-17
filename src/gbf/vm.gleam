@@ -25,6 +25,7 @@ pub type Error {
 ///     to perform under- or overflow, i.e. decrement 0 or increment 255.
 ///   - Two streams of bytes for input and output using the ASCII character
 ///     encoding.
+///
 pub type VirtualMachine {
   VirtualMachine(pointer: Index, cells: Cells, output: String, input: List(Int))
 }
@@ -39,10 +40,19 @@ pub fn new(input: List(Int)) -> VirtualMachine {
   VirtualMachine(input:, pointer: 0, cells: dict.new(), output: "")
 }
 
+/// Returns the accumulated output string from the virtual machine.
+///
 pub fn output(vm: VirtualMachine) -> String {
   vm.output
 }
 
+/// Gets the value of the cell at the specified pointer.
+/// Returns an error if the pointer is out of bounds.
+///
+/// ```gleam
+/// get_cell(vm, 0)  // Ok(0)
+/// get_cell(vm, -1) // Error(PointerRanOffTape)
+/// ```
 pub fn get_cell(vm: VirtualMachine, pointer: Index) -> Result(Index, Error) {
   use pointer <- result.try(validate_tape_size(pointer))
 
@@ -52,6 +62,16 @@ pub fn get_cell(vm: VirtualMachine, pointer: Index) -> Result(Index, Error) {
   }
 }
 
+/// Sets the value of the cell at the specified pointer.
+///
+/// Returns an updated virtual machine if successful, or an error if:
+/// - The pointer is out of bounds (< 0 or > 30,000)
+/// - The value is out of bounds (< 0 or > 255)
+///
+/// ```gleam
+/// set_cell(vm, 0, 65)  // Ok(...)
+/// set_cell(vm, 0, 256) // Error(IntegerOverflow)
+/// ```
 pub fn set_cell(
   vm: VirtualMachine,
   pointer: Index,
@@ -65,6 +85,13 @@ pub fn set_cell(
   |> Ok
 }
 
+/// Moves the data pointer to the specified position.
+/// Returns error if pointer is out of bounds.
+///
+/// ```gleam
+/// set_pointer(vm, 100) // Ok(...)
+/// set_pointer(vm, -1)  // Error(PointerRanOffTape)
+/// ```
 pub fn set_pointer(
   vm: VirtualMachine,
   pointer: Index,
@@ -75,6 +102,16 @@ pub fn set_pointer(
   |> Ok
 }
 
+/// Reads a byte from the input stream and stores it in the current cell.
+///
+/// Consumes the first byte from the input list and writes it to the cell
+/// at the current pointer position.
+/// Returns an error if the input is empty.
+///
+/// ```gleam
+/// input_byte(vm)       // Ok(...)
+/// input_byte(empty_vm) // Error(EmptyInput)
+/// ```
 pub fn input_byte(vm: VirtualMachine) -> Result(VirtualMachine, Error) {
   case vm.input {
     [] -> Error(EmptyInput)
@@ -87,6 +124,11 @@ pub fn input_byte(vm: VirtualMachine) -> Result(VirtualMachine, Error) {
   }
 }
 
+/// Reads the value from the current cell and appends it to the output as a character.
+///
+/// Converts the cell value to an ASCII character and adds it to the output string.
+/// Returns an error if the cell value is not a valid ASCII code point.
+///
 pub fn output_byte(vm: VirtualMachine) -> Result(VirtualMachine, Error) {
   use cell_value <- result.try(get_cell(vm, vm.pointer))
 
