@@ -25,6 +25,10 @@ pub fn run(source: String) -> Result(VirtualMachine, Error) {
   Ok(bvm)
 }
 
+pub fn output(virtual_machine: VirtualMachine) -> String {
+  vm.output(virtual_machine)
+}
+
 fn parse_ast(source: String) {
   source
   |> lexer.new

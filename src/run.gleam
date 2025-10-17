@@ -1,5 +1,4 @@
 import gbf
-import gbf/vm
 import gleam/io
 
 pub fn main() -> Nil {
@@ -9,6 +8,6 @@ pub fn main() -> Nil {
   let assert Ok(virtual_machine) = gbf.run(input)
 
   virtual_machine
-  |> vm.output
+  |> gbf.output
   |> io.println
 }
