@@ -1,4 +1,3 @@
-import char
 import gbf/eval
 import gbf/lexer
 import gbf/parser

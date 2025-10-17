@@ -7,6 +7,7 @@ repository = { type = "github", user = "olexsmir", repo = "gbf" }
 [dependencies]
 gleam_stdlib = ">= 0.44.0 and < 2.0.0"
 splitter = ">= 1.1.0 and < 2.0.0"
+iso_8859 = ">= 2.0.1 and < 3.0.0"
 
 [dev-dependencies]
 gleeunit = ">= 1.0.0 and < 2.0.0"
