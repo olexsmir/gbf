@@ -35,7 +35,6 @@ pub type Error {
 ///
 pub fn parse(tokens: List(#(Token, Position))) -> Result(AST, Error) {
   let root = Node(Block(children: [], position: Position(0)))
-
   use #(ast, remaining_tokens) <- result.try(parse_tokens(tokens, root))
 
   case remaining_tokens {
@@ -71,11 +70,10 @@ fn parse_block(token, tokens, node) {
         child_block,
       ))
 
-      let new_children = list.append(block.children, [parsed_child_block])
-      let new_node =
-        Node(Block(children: new_children, position: block.position))
+      let children = list.append(block.children, [parsed_child_block])
+      let node = Node(Block(children: children, position: block.position))
 
-      parse_tokens(remaining_tokens, new_node)
+      parse_tokens(remaining_tokens, node)
     }
   }
 }

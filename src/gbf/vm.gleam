@@ -1,4 +1,4 @@
-import char
+import ascii
 import gleam/dict.{type Dict}
 import gleam/list
 import gleam/result
@@ -79,9 +79,9 @@ pub fn set_cell(
 ) -> Result(VirtualMachine, Error) {
   use pointer <- result.try(validate_tape_size(pointer))
   use value <- result.try(validate_cell_size(value))
+  let cells = dict.insert(vm.cells, pointer, value)
 
-  let new_cells = dict.insert(vm.cells, pointer, value)
-  VirtualMachine(..vm, cells: new_cells)
+  VirtualMachine(..vm, cells:)
   |> Ok
 }
 
@@ -132,7 +132,7 @@ pub fn input_byte(vm: VirtualMachine) -> Result(VirtualMachine, Error) {
 pub fn output_byte(vm: VirtualMachine) -> Result(VirtualMachine, Error) {
   use cell_value <- result.try(get_cell(vm, vm.pointer))
 
-  case char.from_code(cell_value) {
+  case ascii.from_code(cell_value) {
     "" -> Error(InvalidChar(cell_value))
     c ->
       VirtualMachine(..vm, output: vm.output <> c)

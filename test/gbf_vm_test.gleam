@@ -1,4 +1,4 @@
-import char
+import ascii
 import gbf/vm.{type VirtualMachine}
 import gleam/result
 import gleeunit/should
@@ -53,7 +53,7 @@ pub fn output_byte_empty_test() {
 }
 
 pub fn output_byte_test() {
-  let vm = setup([char.to_code("a")])
+  let vm = setup([ascii.to_code("a")])
   use vm <- result.try(vm.output_byte(vm))
 
   should.equal(vm.output, "a")
@@ -68,9 +68,9 @@ pub fn input_byte_empty_test() {
 }
 
 pub fn input_byte_test() {
-  let vm = setup([char.to_code("a"), char.to_code("b")])
+  let vm = setup([ascii.to_code("a"), ascii.to_code("b")])
   use vm <- result.try(vm.input_byte(vm))
 
-  should.equal(vm.input, [char.to_code("b")])
+  should.equal(vm.input, [ascii.to_code("b")])
   Ok("")
 }

@@ -1,4 +1,4 @@
-import char
+import ascii
 import gbf/eval
 import gbf/lexer
 import gbf/parser
@@ -16,7 +16,7 @@ pub fn run(source: String) -> Result(VirtualMachine, Error) {
   let bvm =
     source
     |> string.split(on: "")
-    |> list.map(char.to_code)
+    |> list.map(ascii.to_code)
     |> vm.new
 
   use ast <- result.try(parse_ast(source))
