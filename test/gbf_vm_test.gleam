@@ -8,14 +8,10 @@ fn setup(input) -> VirtualMachine {
 }
 
 pub fn get_cell_test() {
-  let vm = setup([])
+  let vm = setup([ascii.to_code("b")])
 
   vm.get_cell(vm, 3)
   |> should.equal(Ok(0))
-}
-
-pub fn get_cell_out_of_tape_test() {
-  let vm = setup([])
 
   vm.get_cell(vm, vm.tape_size + 1)
   |> should.equal(Error(vm.PointerRanOffTape))
@@ -26,10 +22,6 @@ pub fn set_cell_test() {
 
   vm.set_cell(vm, 2, 22)
   |> should.be_ok
-}
-
-pub fn set_cell_errors_test() {
-  let vm = setup([])
 
   vm.set_cell(vm, vm.tape_size + 1, 22)
   |> should.be_error
@@ -45,16 +37,12 @@ pub fn set_pointer_test() {
   |> should.be_ok
 }
 
-pub fn output_byte_empty_test() {
-  let vm = setup([])
-
-  vm.output_byte(vm)
-  |> should.equal(Error(vm.InvalidChar(0)))
-}
-
 pub fn output_byte_test() {
   let vm = setup([ascii.to_code("a")])
   use vm <- result.try(vm.output_byte(vm))
+
+  vm.output_byte(vm)
+  |> should.equal(Error(vm.InvalidChar(0)))
 
   should.equal(vm.output, "a")
   Ok("")
