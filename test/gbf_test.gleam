@@ -1,5 +1,5 @@
 import gbf
-import gbf/vm
+import gbf/internal/vm
 import gleeunit
 import gleeunit/should
 

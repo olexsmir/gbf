@@ -1,5 +1,5 @@
-import gbf/lexer.{type Position, Position}
-import gbf/token.{type Token}
+import gbf/internal/lexer.{type Position, Position}
+import gbf/internal/token.{type Token}
 import gleam/list
 import gleam/pair
 import gleam/result
