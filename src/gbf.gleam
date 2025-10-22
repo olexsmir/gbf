@@ -1,8 +1,8 @@
 import ascii
-import gbf/eval
-import gbf/lexer
-import gbf/parser
-import gbf/vm.{type VirtualMachine}
+import gbf/internal/eval
+import gbf/internal/lexer
+import gbf/internal/parser
+import gbf/internal/vm.{type VirtualMachine}
 import gleam/list
 import gleam/result
 import gleam/string

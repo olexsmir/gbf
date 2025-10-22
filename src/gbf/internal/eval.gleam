@@ -1,7 +1,7 @@
-import gbf/lexer
-import gbf/parser.{type AST, type Block, type Command}
-import gbf/token
-import gbf/vm.{type VirtualMachine}
+import gbf/internal/lexer
+import gbf/internal/parser.{type AST, type Block, type Command}
+import gbf/internal/token
+import gbf/internal/vm.{type VirtualMachine}
 import gleam/int
 import gleam/list
 import gleam/result
