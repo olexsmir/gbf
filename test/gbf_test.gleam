@@ -1,5 +1,4 @@
 import gbf
-import gbf/internal/vm
 import gleeunit
 import gleeunit/should
 
@@ -14,6 +13,6 @@ pub fn should_run_hello_world_test() {
   let assert Ok(bvm) = gbf.run(input)
 
   bvm
-  |> vm.output
+  |> gbf.output
   |> should.equal("Hello World!\n")
 }
