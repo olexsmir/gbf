@@ -1,6 +1,6 @@
-import gbf/lexer.{Position}
-import gbf/parser.{Block, Leaf, Node}
-import gbf/token.{DecrementByte, IncrementByte, IncrementPointer}
+import gbf/internal/lexer.{Position}
+import gbf/internal/parser.{Block, Leaf, Node}
+import gbf/internal/token.{DecrementByte, IncrementByte, IncrementPointer}
 import gleeunit/should
 
 pub fn should_parse_test() {
