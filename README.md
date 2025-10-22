@@ -23,6 +23,6 @@ pub fn main() -> Nil {
 
 ### As CLI tool
 ```bash
-gleam run -m run ./examples/helloworld.bf
+gleam run -m gbf/run ./examples/helloworld.bf
 #> Hello World!
 ```
