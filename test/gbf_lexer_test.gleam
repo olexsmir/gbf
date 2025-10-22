@@ -1,5 +1,5 @@
-import gbf/lexer
-import gbf/token
+import gbf/internal/lexer
+import gbf/internal/token
 import gleeunit/should
 
 pub fn can_lex_test() {

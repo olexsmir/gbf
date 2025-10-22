@@ -1,4 +1,4 @@
-import gbf/token.{type Token}
+import gbf/internal/token.{type Token}
 import gleam/list
 import gleam/string
 import splitter
