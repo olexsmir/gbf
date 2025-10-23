@@ -1,4 +1,4 @@
-import ascii
+import gbf/internal/ascii
 import gbf/internal/eval
 import gbf/internal/lexer
 import gbf/internal/parser
