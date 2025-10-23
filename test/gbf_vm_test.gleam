@@ -1,4 +1,4 @@
-import ascii
+import gbf/internal/ascii
 import gbf/internal/vm.{type VirtualMachine}
 import gleam/result
 import gleeunit/should
