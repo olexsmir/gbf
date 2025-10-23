@@ -1,4 +1,4 @@
-import ascii
+import gbf/internal/ascii
 import gleam/dict.{type Dict}
 import gleam/list
 import gleam/result
